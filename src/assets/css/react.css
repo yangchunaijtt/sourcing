@@ -60,8 +60,9 @@
      -webkit-backface-visibility: hidden;
      text-decoration:none;
  }
- li {
+ ul,li {
      list-style: none;
+     list-style-type:none;
  }
  
  ::-webkit-scrollbar {
@@ -108,3 +109,11 @@ body {
   height: 0;
 }
 
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}

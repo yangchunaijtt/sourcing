@@ -11,6 +11,7 @@ export default {
 </script>
 
 <style>
+  @import "../static/css/react.css";
   #app {
     width:100%;
     height:100%;

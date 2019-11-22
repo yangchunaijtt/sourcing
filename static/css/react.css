@@ -36,7 +36,7 @@
      line-height: 1;
      overflow-x: hidden;
      color:#666;
-     background:#efefef;
+     background: url("../img/body.jpg");
  }
  
  blockquote, q {

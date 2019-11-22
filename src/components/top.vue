@@ -15,28 +15,10 @@
           </div>
         <ul class="itemdiv">
           <li class="item">
-            <router-link to="">会员中心</router-link>
+            <router-link to="/home/index">会员中心</router-link>
           </li>
           <li class="item">
-            <router-link to="">市场分析</router-link>
-          </li>
-          <li class="item">
-            <router-link to="">买家深度分析</router-link>
-          </li>
-          <li class="item">
-            <router-link to="">采购产品分析</router-link>
-          </li>
-          <li class="item">
-            <router-link to="">供应商分析</router-link>
-          </li>
-          <li class="item">
-            <router-link to="">订制报告</router-link>
-          </li>
-          <li class="item">
-            <router-link to="">跨采价值</router-link>
-          </li>
-          <li class="item">
-            <router-link to="">关于特易</router-link>
+            <router-link to="/supplier">供应商分析</router-link>
           </li>
         </ul>
       </div>
@@ -135,6 +117,8 @@ export default {
         }
           .item{
             width:100px;
+            list-style-type: none;
+            list-style: none;
           }
             a{
               color:#fff;
