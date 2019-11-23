@@ -1,49 +1,69 @@
-// 引入 axios
 import axios from 'axios'
-// 测试地址
-axios.defaults.baseURL = 'http://47.92.93.2:8081/';
-// 线上地址
-// axios.defaults.baseURL = '';
-// request拦截器
-// axios.interceptors.request.use(function (config) {
-//     return config;
-// }, function (error) {
-//   
-//   return Promise.reject(error);
-// });
-var http = {
+import qs from 'qs'
 
-  /** get 请求
-   * @param  {接口地址} url
-   * @param  {请求参数} params
-   */
-  get: function(url,params){
-    return new Promise((resolve,reject) => {
-      axios.get(url,{
-        params:params
-      })
-      .then((response) => {
-        resolve( response.data );
-      })
-      .catch((error) => {
-        reject( error );
-      });
-    })
-  },
-  /** post 请求
-   * @param  {接口地址} url
-   * @param  {请求参数} params
-   */
-  post: function(url,params){
-    return new Promise((resolve,reject) => {
-      axios.post(url,params)
-      .then((response) => {
-        resolve( response.data );
-      })
-      .catch((error) => {
-        reject( error );
-      });
-    })
+axios.defaults.timeout = 8000;                  //响应时间
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';        //配置请求头
+
+
+axios.defaults.baseURL = 'http://119.3.71.137:8081'; //配置接口地址
+
+
+//POST传参序列化(添加请求拦截器)
+axios.interceptors.request.use((config) => {
+  //在发送请求之前做某件事
+  if(config.method  === 'post'){
+      config.headers.authorization = localStorage.getItem('Token');
+      config.data = qs.stringify(config.data);
+      
   }
+
+  return config;
+},(error) =>{
+  console.log('axios-错误的传参')
+  return Promise.reject(error);
+});
+
+//返回状态判断(添加响应拦截器)
+axios.interceptors.response.use((res) =>{
+    //对响应数据做些事
+    if(!res.data.success){
+        return Promise.resolve(res);
+    }
+    return res;
+}, (error) => {
+    console.log('axios-网络异常')
+    return Promise.reject(error);
+});
+
+//返回一个Promise(发送post请求)
+export function fetchPost(url,params) {
+    return new Promise((resolve, reject) => {
+        axios.post(url, params)
+            .then(response => {
+                resolve(response);
+            }, err => {
+                reject(err);
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
 }
-export default http;
+////返回一个Promise(发送get请求)
+export function fetchGet(url, param) {
+    return new Promise((resolve, reject) => {
+        axios.get(url, {params: param})
+            .then(response => {
+                resolve(response)
+            }, err => {
+                reject(err)
+            })
+            .catch((error) => {
+                reject(error)
+            })
+    })
+}
+export default {
+    fetchPost,
+    fetchGet,
+}

@@ -56,6 +56,14 @@
               <router-link to="/home/accout"  class="text">- 我的账户</router-link>
             </li>
             <li class="item">
+              <router-link to="/home/lookuser"  class="text">- 查看用户</router-link>
+            </li>
+            <li class="item">
+              <router-link to="/home/add"  class="text">- 添加用户</router-link>
+            </li>
+            <li class="item">
+              <router-link to="/home/delete"  class="text">- 删除用户</router-link>
+            <li class="item">
               <router-link to="/home/subaccout"  class="text">- 子账户管理</router-link>
             </li>
             <li class="item">
@@ -91,6 +99,7 @@ export default {
     return {
       showWelcome:true,
       isshowWant:false,
+      nowRoue:"HomeIndex",
     }
   },
   computed: {
@@ -101,9 +110,23 @@ export default {
       }
       return `欢迎您，${text}!`
     },
+    isuser(){
+      let text = localStorage.getItem('user');
+      if (  text === "admin") {
+        return true;
+      }else {
+        return falsse;
+      }
+    },
   },
   created () {
-    
+    // console.log("当前路由名",this.$route.name);
+    this.nowRoue = this.$route.name;
+    if ( this.nowRoue === "HomeIndex") {
+      this.showWelcome = true;
+    }else {
+      this.showWelcome = false;
+    }
   },
   methods: {
     showWant(){

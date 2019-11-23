@@ -45,7 +45,9 @@ export default {
   methods: {
     signout(){
       localStorage.removeItem('username');
-      localStorage.removeItem('password');
+      // localStorage.removeItem('password');
+      localStorage.removeItem('user');
+      localStorage.removeItem('Token');
       this.$router.push({path:'/login',query:{}});
     },
   }
@@ -103,8 +105,6 @@ export default {
             display:block;
             margin:0 auto;
             width:194px;
-            height:52px;
-            
           }
         .itemdiv{
           flex:1;
@@ -114,6 +114,7 @@ export default {
           text-align: center;
           background: url("../assets/images/nav_bg_3.jpg") no-repeat;
           background-size: 100%;
+          margin-top:10px
         }
           .item{
             width:100px;

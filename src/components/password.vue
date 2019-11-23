@@ -1,6 +1,9 @@
 <template>
   <div class="password">
-    <div class="content">
+    <div class="nopower" v-show="!power">
+      没有权限
+    </div>
+    <div class="content" v-show="power">
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" :label-position="'left'">
         <!-- 年龄这里 -->
       <el-form-item label="原始密码" prop="oldpass">  
@@ -69,8 +72,17 @@ export default {
           oldpass: [
             { validator: checkOldpass, trigger: 'blur' }
           ]
-        }
+        },
+        power:false,
       };
+    },
+    created () {
+      let user = localStorage.getItem("user");
+      if ( user === "admin") {
+        this.power = true ;
+      }else {
+        this.power = false ;
+      }
     },
     methods: {
       submitForm(formName) {
@@ -93,6 +105,11 @@ export default {
 <style lang="stylus" scoped>
   .password
     clear:both
+    .nopower 
+      padding: 20px 30px 10px 30px
+      color:#000 
+      font-size:16px 
+      font-weight:bold
     .content
       padding:120px;
       padding-top:80px

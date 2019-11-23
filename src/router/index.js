@@ -7,6 +7,9 @@ import Password from "@/components/password.vue"
 import myaccout from "@/components/myaccout.vue"
 import query from "@/components/query.vue"
 import subaccout from "@/components/subaccout.vue"
+import lookuser from "@/components/lookuser.vue"
+import Add from "@/components/Add.vue"
+import Delete from "@/components/delete.vue"
 //其他  
 import Login from "../views/login.vue";
 import Supplier from "../views/Supplier";
@@ -49,6 +52,21 @@ const routes = [
           path: 'subaccout',
           name: 'subaccout',
           component: subaccout
+        },
+        {
+          path: 'lookuser',
+          name: 'lookuser',
+          component: lookuser
+        },
+        {
+          path: 'add',
+          name: 'add',
+          component: Add
+        },
+        {
+          path: 'delete',
+          name: 'delete',
+          component: Delete
         },
       ]
     },

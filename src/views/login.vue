@@ -7,7 +7,7 @@
                 <el-input v-model="ruleForm.userName"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="name">
-                <el-input v-model="ruleForm.password"></el-input>
+                <el-input type="password" v-model="ruleForm.password"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -21,8 +21,7 @@
 
 <script>
 
-  // import Cookie from "../utils/cookie.js"
-  // import $axios  from "../utils/axios.js";
+  import https  from "../utils/axios.js";
   let  login_url = "";
 
   export default {
@@ -48,40 +47,44 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             
-            login_url =  `http://47.92.93.2:8081/user/login?userName=${this.ruleForm.userName}&passWord=${this.ruleForm.password}`;
-            this.$http.post(
-              login_url,
-      
-            ).then((res) => { 
-              console.log("登录的数据",res,res.code);
-              // 201	
-                // Created
-                // 401	
-                // Unauthorized
-                // 403	
-                // Forbidden
-                // 404	
-                // Not Found
-        
-               if ( res.code === "200"){
-                  localStorage.setItem('username', this.ruleForm.userName);
-                  localStorage.setItem('password',this.ruleForm.password);
-                  this.$router.push({path:'/home',query:{}});
-              }else {
-                
-                this.$message({
-                  showClose: true,
-                  message: `创建用户发生错误，${res.message}`,
-                  type: 'error'
-                });
-              }
-            }).catch((err)=>{
-              this.$message({
-                  showClose: true,
-                  message: `网络出错，请重试，${err.message}`,
-                  type: 'error'
-              });
-            })
+            login_url =  `http://119.3.71.137:8081/user/login?userName=${this.ruleForm.userName}&passWord=${this.ruleForm.password}`;
+            let login_data = {
+              userName:this.ruleForm.userName,
+              passWord:this.ruleForm.password
+            };
+            https.fetchPost(login_url,{}).then((res) => {
+                  console.log("登录的数据",res,res.code,res.data.message);
+                  // 201	
+                    // Created
+                    // 401	
+                    // Unauthorized
+                    // 403	
+                    // Forbidden
+                    // 404	
+                    // Not Found
+            
+                  if ( res.data.code === "200"){
+                      localStorage.setItem('username', this.ruleForm.userName);
+                      // localStorage.setItem('password',this.ruleForm.password);
+                      localStorage.setItem('Token',res.data.content.Token);
+                      localStorage.setItem('user',res.data.content.user);
+                      this.$router.push({path:'/home',query:{}});
+                  }else {
+                    
+                    this.$message({
+                      showClose: true,
+                      message: `创建用户发生错误，${res.data.message}`,
+                      type: 'error'
+                    });
+                  }
+              }).catch( (err)=> {
+                  this.$message({
+                        showClose: true,
+                        message: `网络出错，请重试，${null ===err.data.message ?"":err.data.message}`,
+                        type: 'error'
+                     });
+                  }
+              );  
             
           } else {
             return false;
@@ -90,11 +93,13 @@
       },
       resetForm(formName) {
         this.$refs[formName].resetFields();
+        this.ruleForm.userName ="";
+        this.ruleForm.password ="";
       },
     },
     beforeRouteEnter(to,from,next){
       let  usename = localStorage.getItem('username');
-      let  password = localStorage.getItem('password');
+      // let  password = localStorage.getItem('password');
       let  reg =  usename === undefined ||  usename === null || usename === "" || password === undefined ||  password === null || password === ""
       if ( reg ) {
         next ( vm => {});
@@ -102,7 +107,7 @@
         next ( vm => {
           
           vm.ruleForm.userName = usename;
-          vm.ruleForm.password= password;
+          // vm.ruleForm.password= password;
         }) 
       }
       
